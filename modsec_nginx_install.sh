@@ -42,7 +42,7 @@ sudo sed -i '/modules-enabled/a\load_module         modules/ngx_http_modsecurity
 fi
 
 
-if [! -d /etc/nginx/modsec ]; then sudo mkdir /etc/nginx/modsec; fi
+if [ ! -d /etc/nginx/modsec ]; then sudo mkdir /etc/nginx/modsec; fi
 sudo cp /usr/local/src/ModSecurity/modsecurity.conf-recommended /etc/nginx/modsec/modsecurity.conf
 # sudo nano /etc/nginx/modsec/modsecurity.conf
 #     SecRuleEngine DetectionOnly >>> SecRuleEngine On
@@ -55,7 +55,7 @@ sudo sed -i '/SecAuditLogParts/s/ABIJDEFHZ/ABCEFHJKZ/' /etc/nginx/modsec/modsecu
 #     Include /etc/nginx/modsec/modsecurity.conf
 
 if ! grep -E "modsecurity" /etc/nginx/modsec/main.conf; then 
-echo "Include /etc/nginx/modsec/modsecurity.conf" | sudo tee -a /etc/nginx/modsec/main.conf
+  echo "Include /etc/nginx/modsec/modsecurity.conf" | sudo tee -a /etc/nginx/modsec/main.conf
 fi
 
 sudo cp /usr/local/src/ModSecurity/unicode.mapping /etc/nginx/modsec/
