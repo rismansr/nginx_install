@@ -139,7 +139,7 @@ apt install inotify-tools -y && \
 cat <<EOF > /usr/sbin/inotify_nginx.sh
 #!/bin/bash
 while true; do
-  inotifywait -q -o /var/log/inotify_nginx.log --timefmt '%F %T' --format '[ %T ] %w %e %f'  --exclude '(.*.sw.*|.*~)' -e create -e modify -e delete -r /etc/nginx/ /etc/letsencrypt/
+  inotifywait -q -o /var/log/inotify_nginx.log --timefmt '%F %T' --format '[ %T ] %w %e %f'  --exclude '(.*.sw.*|.*~|.*nginx-vhost-generator.*)' -e create -e modify -e delete -r /etc/nginx/ /etc/letsencrypt/
 
   ## make sure this VM can ssh to remote nginx VM using root user for reloading nginx service
   ## change the IP below to match the remote VM's IP
