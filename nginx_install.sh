@@ -100,6 +100,7 @@ echo ""
 echo "##############"
 echo "### badbot ###"
 echo "##############"
+cd -
 cp -rf ./badagent.list /etc/nginx/badagent.list
 
 echo ""
