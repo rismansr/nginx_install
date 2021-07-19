@@ -121,7 +121,7 @@ ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 crontab -l > mycron
 if ! grep -E "certbot" mycron; then 
 #echo new cron into cron file
-echo "0 0 */10 * * certbot renew >> /var/log/certbot-cron.log 2>&1" >> mycron
+echo "0 0 */10 * * /usr/bin/certbot renew >> /var/log/certbot-cron.log 2>&1" >> mycron
 #install new cron file
 crontab mycron
 fi
