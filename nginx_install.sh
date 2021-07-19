@@ -117,6 +117,20 @@ python3 -m venv /opt/certbot/
 ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 /opt/certbot/bin/pip install certbot-nginx certbot-plugin-gandi
 
+#write out current crontab
+crontab -l > mycron
+if ! grep -E "certbot" mycron; then 
+#echo new cron into cron file
+echo "0 0 */10 * * certbot renew >> /var/log/certbot-cron.log 2>&1" >> mycron
+#install new cron file
+crontab mycron
+fi
+
+rm mycron
+
+echo -e '#!/bin/bash\nnginx -t && systemctl reload nginx' > /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+chmod a+x /etc/letsencrypt/renewal-hooks/post/nginx-reload.sh
+
 # ### keepalived ###
 # ### Install from source
 # sudo apt-get install build-essential libssl-dev
