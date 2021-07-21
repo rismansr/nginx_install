@@ -1,0 +1,4 @@
+<?php
+# please change this key to use the right one
+define('ABUSE_IP_DB_KEY', YOUR_ABUSE_IP_DB_KEY'); // String
+define('ABUSE_CONFIDENCE_SCORE', 80); // Integer

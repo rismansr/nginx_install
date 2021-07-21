@@ -1,0 +1,11 @@
+# 'AccountID' is from your MaxMind account.
+AccountID YOURACCOUNTID
+
+# 'LicenseKey' is from your MaxMind account
+LicenseKey YOURLINCENSEKEY
+
+# 'EditionIDs' is from your MaxMind account.
+EditionIDs GeoLite2-ASN GeoLite2-City GeoLite2-Country
+
+# The directory to store the database files. Defaults to DATADIR
+DatabaseDirectory /etc/nginx/geoip2

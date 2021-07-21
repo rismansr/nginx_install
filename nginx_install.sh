@@ -34,24 +34,26 @@ apt update && \
 apt install geoipupdate libmaxminddb0 libmaxminddb-dev mmdb-bin -y && \
 mkdir /etc/nginx/geoip2
 
-cat <<EOF >/etc/nginx/GeoIP.conf
-# GeoIP.conf file for 'geoipupdate' program, for versions >= 3.1.1.
-# Used to update GeoIP databases from https://www.maxmind.com.
-# For more information about this config file, visit the docs at
-# https://dev.maxmind.com/geoip/geoipupdate/.
+# cat <<EOF >/etc/nginx/GeoIP.conf
+# # GeoIP.conf file for 'geoipupdate' program, for versions >= 3.1.1.
+# # Used to update GeoIP databases from https://www.maxmind.com.
+# # For more information about this config file, visit the docs at
+# # https://dev.maxmind.com/geoip/geoipupdate/.
 
-# 'AccountID' is from your MaxMind account.
-AccountID 572218
+# # 'AccountID' is from your MaxMind account.
+# AccountID YOUR_ACCOUNT_ID
 
-# 'LicenseKey' is from your MaxMind account
-LicenseKey wlsoMOZG78gAGI1u
+# # 'LicenseKey' is from your MaxMind account
+# LicenseKey YOUR_LICENSE_KEY
 
-# 'EditionIDs' is from your MaxMind account.
-EditionIDs GeoLite2-ASN GeoLite2-City GeoLite2-Country
+# # 'EditionIDs' is from your MaxMind account.
+# EditionIDs GeoLite2-ASN GeoLite2-City GeoLite2-Country
 
-# The directory to store the database files. Defaults to DATADIR
-DatabaseDirectory /etc/nginx/geoip2
-EOF
+# # The directory to store the database files. Defaults to DATADIR
+# DatabaseDirectory /etc/nginx/geoip2
+# EOF
+
+cp ./GeoIP.conf /etc/nginx/GeoIP.conf
 
 geoipupdate -f /etc/nginx/GeoIp.conf && \
 
@@ -73,12 +75,14 @@ echo "#################"
 apt install php -y --no-install-recommends && \
 git clone https://github.com/AmplitudeDesignInc/abuseipdb-php-nginx-blacklist-create.git /etc/nginx/abuseipdb
 
-cat <<EOF >/etc/nginx/abuseipdb/config.php
-<?php
-# please change this key to use the right one
-define('ABUSE_IP_DB_KEY', '3e2062f086ac1b0d36e447c0615c8a17d55164d4225d336fd4aa2de88a2fc63561951ddac5f8438f'); // String
-define('ABUSE_CONFIDENCE_SCORE', 80); // Integer
-EOF
+# cat <<EOF >/etc/nginx/abuseipdb/config.php
+# <?php
+# # please change this key to use the right one
+# define('ABUSE_IP_DB_KEY', 'YOUR_ABUSE_IP_DB_KEY'); // String
+# define('ABUSE_CONFIDENCE_SCORE', 80); // Integer
+# EOF
+
+cp ./abuseipdb_config.php /etc/nginx/abuseipdb/config.php
 
 cd /etc/nginx/abuseipdb && php abuseipdb-blacklist-create.php && \
 
