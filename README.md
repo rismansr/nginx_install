@@ -13,7 +13,7 @@ These sripts are used for installing High Availability Nginx + Modsecurity in De
 
 - Clone this repo into the VMs
 - Create GeoIP.conf (follow instruction bellow):
-    - Create an account on maxmind.com if you have not one ( https://www.maxmind.com/en/geolite2/signup?lang=en )
+    - Create an account on maxmind.com if you do not have one ( https://www.maxmind.com/en/geolite2/signup?lang=en )
     - Generate a lincense key https://www.maxmind.com/en/accounts/current/license-key?lang=en )
     - Get GeoIP.conf https://www.maxmind.com/en/accounts/current/license-key/GeoIP.conf
     - Place it in the nginx-install repo directory
