@@ -45,16 +45,16 @@ sudo apt update && sudo apt upgrade
 
 - Install Nginx
 
+> Note: If you are going to install nginx/modsec  on the second Nginx VM please comment out these configs in /etc/nginx/nginx.conf before executing the script for installing nginx/modsec otherwise you will face error on when you are installing nginx/modsec:
+> - `load_module          modules/ngx_http_modsecurity_module.so;`
+> - `modsecurity on;`
+> - ​`modsecurity_rules_file /etc/nginx/modsec/rules.conf;`
+
 ```bash
 sudo bash nginx_install.sh
 ```
 
 - Install modsec
-
-    - Note: If you are going to install modsec  on the second Nginx VM please comment out these configs in /etc/nginx/nginx.conf before executing the script for installing modsec:
-        - `load_module          modules/ngx_http_modsecurity_module.so;`
-        - `modsecurity on;`
-        - ​`modsecurity_rules_file /etc/nginx/modsec/rules.conf;`
 
 ```bash
 bash modsec_nginx_install.sh
