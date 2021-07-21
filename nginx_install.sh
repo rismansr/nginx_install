@@ -58,10 +58,10 @@ geoipupdate -f /etc/nginx/GeoIp.conf && \
 #write out current crontab
 crontab -l > mycron
 if ! grep -E "geoipupdate" mycron; then 
-#echo new cron into cron file
-echo "0 0 * * 1 /usr/bin/geoipupdate -f /etc/nginx/GeoIp.conf" >> mycron
-#install new cron file
-crontab mycron
+  #echo new cron into cron file
+  echo "0 0 * * 1 /usr/bin/geoipupdate -f /etc/nginx/GeoIp.conf" >> mycron
+  #install new cron file
+  crontab mycron
 fi
 
 rm mycron
@@ -82,16 +82,19 @@ EOF
 
 cd /etc/nginx/abuseipdb && php abuseipdb-blacklist-create.php && \
 
-sed -i '/sites-enabled/a\    #Block spammers and other unwanted visitors\n    include /etc/nginx/abuseipdb/nginx-abuseipdb-blacklist.conf;' /etc/nginx/nginx.conf
+if ! grep -E "nginx-abuseipdb-blacklist" /etc/nginx/nginx.conf; then 
+ sed -i '/sites-enabled/a\    #Block spammers and other unwanted visitors\n    include /etc/nginx/abuseipdb/nginx-abuseipdb-blacklist.conf;' /etc/nginx/nginx.conf
+fi
+
 nginx -t && service nginx reload
 
 #write out current crontab
 crontab -l > mycron
 if ! grep -E "abuseipdb-blacklist-create" mycron; then 
-#echo new cron into cron file
-echo "0 1 * * * /usr/bin/php /etc/nginx/abuseipdb/abuseipdb-blacklist-create.php" >> mycron
-#install new cron file
-crontab mycron
+  #echo new cron into cron file
+  echo "0 1 * * * /usr/bin/php /etc/nginx/abuseipdb/abuseipdb-blacklist-create.php" >> mycron
+  #install new cron file
+  crontab mycron
 fi
 
 rm mycron
@@ -120,10 +123,10 @@ ln -s /opt/certbot/bin/certbot /usr/bin/certbot
 #write out current crontab
 crontab -l > mycron
 if ! grep -E "certbot" mycron; then 
-#echo new cron into cron file
-echo "0 0 */10 * * /usr/bin/certbot renew >> /var/log/certbot-cron.log 2>&1" >> mycron
-#install new cron file
-crontab mycron
+  #echo new cron into cron file
+  echo "0 1 * * 3 /usr/bin/certbot renew >> /var/log/certbot-cron.log 2>&1" >> mycron
+  #install new cron file
+  crontab mycron
 fi
 
 rm mycron
