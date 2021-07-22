@@ -120,9 +120,9 @@ apt install -y python3 python3-venv libaugeas0
 apt-get remove certbot
 python3 -m venv /opt/certbot/
 /opt/certbot/bin/pip install --upgrade pip
-/opt/certbot/bin/pip install certbot
+/opt/certbot/bin/pip install certbot==1.15.0
 ln -s /opt/certbot/bin/certbot /usr/bin/certbot
-/opt/certbot/bin/pip install certbot-nginx certbot-plugin-gandi
+/opt/certbot/bin/pip install certbot-nginx==1.15.0 certbot-plugin-gandi
 
 #write out current crontab
 crontab -l > mycron
