@@ -25,7 +25,7 @@ git submodule init && \
 git submodule update && \
 ./build.sh && \
 ./configure && \
-make -j$(lscpu | egrep '^CPU\(s\):' | awk '{print $2}') && \
+make -j$(lscpu | grep -E '^CPU\(s\):' | awk '{print $2}') && \
 sudo make install
 
 echo ""
