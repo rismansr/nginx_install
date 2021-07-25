@@ -20,7 +20,7 @@ git submodule init && \
 git submodule update && \
 ./build.sh && \
 ./configure && \
-make -j$(lscpu | egrep '^CPU\(s\):' | awk '{print $2}') && \
+make -j$(lscpu | grep -E '^CPU\(s\):' | awk '{print $2}') && \
 sudo make install
 
 echo ""
@@ -35,24 +35,16 @@ sudo cp objs/ngx_http_modsecurity_module.so /usr/share/nginx/modules/
 
 echo ""
 echo "### Load the ModSecurity v3 Nginx Connector Module ###"
-#sudo nano /etc/nginx/nginx.conf
-#    load_module modules/ngx_http_modsecurity_module.so;
+
 if ! grep -E "ngx_http_modsecurity_module" /etc/nginx/nginx.conf; then 
 sudo sed -i '/modules-enabled/a\load_module         modules/ngx_http_modsecurity_module.so;' /etc/nginx/nginx.conf
 fi
 
-
 if [ ! -d /etc/nginx/modsec ]; then sudo mkdir /etc/nginx/modsec; fi
 sudo cp /usr/local/src/ModSecurity/modsecurity.conf-recommended /etc/nginx/modsec/modsecurity.conf
-# sudo nano /etc/nginx/modsec/modsecurity.conf
-#     SecRuleEngine DetectionOnly >>> SecRuleEngine On
-#     SecAuditLogParts ABIJDEFHZ >>> SecAuditLogParts ABCEFHJKZ
 
 sudo sed -i '/SecRuleEngine/s/DetectionOnly/On/' /etc/nginx/modsec/modsecurity.conf
 sudo sed -i '/SecAuditLogParts/s/ABIJDEFHZ/ABCEFHJKZ/' /etc/nginx/modsec/modsecurity.conf
-
-# sudo nano /etc/nginx/modsec/main.conf
-#     Include /etc/nginx/modsec/modsecurity.conf
 
 if ! grep -E "modsecurity" /etc/nginx/modsec/main.conf; then 
   echo "Include /etc/nginx/modsec/modsecurity.conf" | sudo tee -a /etc/nginx/modsec/main.conf
@@ -64,26 +56,24 @@ sudo systemctl restart nginx
 
 echo ""
 echo "### Enable OWASP Core Rule Set ###"
+CRS_VERSION=3.3.2
 cd ~
-wget https://github.com/coreruleset/coreruleset/archive/refs/tags/v3.3.0.tar.gz
-tar xvf v3.3.0.tar.gz
-sudo mv -v coreruleset-3.3.0/ /etc/nginx/modsec/
-sudo cp /etc/nginx/modsec/coreruleset-3.3.0/crs-setup.conf.example /etc/nginx/modsec/coreruleset-3.3.0/crs-setup.conf
-# sudo nano /etc/nginx/modsec/main.conf
-#     Include /etc/nginx/modsec/coreruleset-3.3.0/crs-setup.conf
-#     Include /etc/nginx/modsec/coreruleset-3.3.0/rules/*.conf
+wget https://github.com/coreruleset/coreruleset/archive/refs/tags/v"$CRS_VERSION".tar.gz
+tar xvf v"$CRS_VERSION".tar.gz
+sudo mv -v coreruleset-"$CRS_VERSION"/ /etc/nginx/modsec/
+sudo cp /etc/nginx/modsec/coreruleset-"$CRS_VERSION"/crs-setup.conf.example /etc/nginx/modsec/coreruleset-"$CRS_VERSION"/crs-setup.conf
 
 if ! grep -E "crs-setup|rules" /etc/nginx/modsec/main.conf; then 
 sudo bash -c 'cat <<EOF >>/etc/nginx/modsec/main.conf
-Include /etc/nginx/modsec/coreruleset-3.3.0/crs-setup.conf
-Include /etc/nginx/modsec/coreruleset-3.3.0/rules/*.conf
+Include /etc/nginx/modsec/coreruleset-$CRS_VERSION/crs-setup.conf
+Include /etc/nginx/modsec/coreruleset-$CRS_VERSION/rules/*.conf
 EOF'
 fi
 
 #custom rule, only load the rules, if we set modsec config per webapp
 if ! grep -E "rules" /etc/nginx/modsec/rules.conf; then 
 sudo bash -c 'cat <<EOF >>/etc/nginx/modsec/rules.conf
-Include /etc/nginx/modsec/coreruleset-3.3.0/rules/*.conf
+Include /etc/nginx/modsec/coreruleset-$CRS_VERSION/rules/*.conf
 EOF'
 fi
 

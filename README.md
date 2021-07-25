@@ -16,7 +16,13 @@ These sripts are used for installing High Availability Nginx + Modsecurity in De
     - Create an account on maxmind.com if you do not have one ( https://www.maxmind.com/en/geolite2/signup?lang=en )
     - Generate a lincense key https://www.maxmind.com/en/accounts/current/license-key?lang=en )
     - Get GeoIP.conf https://www.maxmind.com/en/accounts/current/license-key/GeoIP.conf
-    - Place it in the nginx-install repo directory
+    - Save it to the /opt/nginx-install directory
+    - Put the license-key to the GeoIP.conf
+
+    ```bash
+    LicenseKey YOUR_LICENSE_KEY_HERE
+    ```
+
     - Add additional config to the GeoIP.conf
 
     ```bash
@@ -25,8 +31,8 @@ These sripts are used for installing High Availability Nginx + Modsecurity in De
     ```
 
 - Create abuseipdb_config.php
-    - Create/login into your abuseipdb account https://www.abuseipdb.com/register
-    - get your abuseipdb key
+    - create/login into your abuseipdb account https://www.abuseipdb.com/register
+    - create an API key ( https://www.abuseipdb.com/account/api )
     - copy abuseipdb_config.php.example and rename it as abuseipdb_config.php
     - put your abuseipdb key into abuseipdb_config.php
 
